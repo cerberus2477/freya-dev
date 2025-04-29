@@ -48,11 +48,18 @@ public partial class AuthViewModel : BaseViewModel
             if (result == null) return;
             if (result.Data is LoginSuccessData successData)
             {
-                await userSessionService.SetAuthTokenAsync(successData.Token);
-                userSessionService.SetCurrentUser(successData.User);
+                if (successData.User.RoleId == 3) //check if user has the right role
+                {
+                    await exceptionHandlerUtil.HandleExceptionAsync(new Exception(), "Nincs megfelelő jogosultságod az app használatához, kérjük fordulj a fejlesztőkhöz, hogy közreműködő lehess!");
+                }
+                else
+                {
+                    await userSessionService.SetAuthTokenAsync(successData.Token);
+                    userSessionService.SetCurrentUser(successData.User);
 
-                await Shell.Current.Navigation.PopToRootAsync();
-                await Shell.Current.GoToAsync("///HomePage");
+                    await Shell.Current.Navigation.PopToRootAsync();
+                    await Shell.Current.GoToAsync("///HomePage");
+                }
             }
             else if (result.Data is EmptyLoginData)
             {

@@ -45,7 +45,7 @@ public partial class AppShell : Shell
     {
         base.OnNavigated(args);
         bool hideFlyout = args.Current.Location.OriginalString.Contains("GreetingPage") ||
-                          args.Current.Location.OriginalString.Contains("LoginPage")
+                          args.Current.Location.OriginalString.Contains("LoginPage");
 
         SetFlyoutBehavior(this, hideFlyout ? FlyoutBehavior.Disabled : FlyoutBehavior.Flyout);
     }
