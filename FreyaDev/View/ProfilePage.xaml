@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FreyaDev.View.ProfilePage"
+             Title="Profile">
+
+    <VerticalStackLayout Padding="20">
+        <Image Source="dotnet_bot.png" WidthRequest="100" HeightRequest="100" HorizontalOptions="Center"/>
+
+        <!-- Username -->
+        <Label Text="Felhasználónév:" FontSize="16"/>
+        <Entry x:Name="UsernameEntry" Text="{Binding ProfileUsername}" IsEnabled="False"/>
+        <Label Text="{Binding ProfileUsernameError}" 
+            TextColor="Red" 
+            IsVisible="{Binding IsProfileUsernameErrorVisible}" />
+
+        <!-- Email -->
+        <Label Text="Email:" FontSize="16"/>
+        <Entry x:Name="EmailEntry" Text="{Binding ProfileEmail}" IsEnabled="False"/>
+        <Label Text="{Binding ProfileEmailError}" 
+            TextColor="Red" 
+            IsVisible="{Binding IsProfileEmailErrorVisible}" />
+
+        <!-- City -->
+        <Label Text="Település:" FontSize="16"/>
+        <Entry x:Name="CityEntry" Text="{Binding ProfileCity}" IsEnabled="False"/>
+        <Label Text="{Binding ProfileCityError}" 
+            TextColor="Red" 
+            IsVisible="{Binding IsProfileCityErrorVisible}" />
+
+        <!-- Birthdate -->
+        <Label Text="Születési dátum:" FontSize="16"/>
+        <DatePicker x:Name="BirthdateEntry" Date="{Binding ProfileBirthdate, Converter={StaticResource StringToDateConverter}}"
+                Format="yyyy-mm-dd"
+                IsEnabled="False"/>
+        <Label Text="{Binding ProfileBirthdateError}" 
+            TextColor="Red" 
+            IsVisible="{Binding IsProfileBirthdateErrorVisible}" />
+
+        <!--Description-->
+        <Label Text="Leírás:" FontSize="16"/>
+        <Entry x:Name="DescriptionEntry" Text="{Binding ProfileDescription}" IsEnabled="False"/>
+
+        <!-- Edit & Save Buttons -->
+        <Button x:Name="EditButton" Text="Módosítás" Clicked="EditProfile_Clicked" Margin="10"/>
+        <Button x:Name="SaveButton" Text="Mentés" Clicked="SaveProfile_Clicked" Command="{Binding SaveProfileCommand}" IsVisible="False" Margin="10"/>
+<!--TODO: két külön parancs legyen? egy a viewben ami kikapcsolja a mezők módosítását, egy a viewmodelben ami menti az apiba az adatokat.-->
+
+        <Button Text="Saját hirdetéseim"
+            Clicked="MyListings_Clicked"
+            HorizontalOptions="Center" />
+        <!-- Other Actions -->
+        <Label Text="Not implemented yet" FontSize="16"/>
+        <Button Text="Saját növényeim" Margin="10"/>
+        <Button Text="Kedvencek" Margin="10"/>
+
+
+        <!-- Logout -->
+        <Button Text="Kijelentkezés" BackgroundColor="Red" TextColor="White" Clicked="Logout_Clicked" Margin="10"/>
+    </VerticalStackLayout>
+
+</ContentPage>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    x:Class="FreyaDev.View.StartingPages.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:FreyaDev.Model"
+    xmlns:viewmodel="clr-namespace:FreyaDev.ViewModel"
+    x:DataType="viewmodel:AuthViewModel"
+    Title="{Binding Title}">
+
+    <VerticalStackLayout Padding="20">
+
+        <Label Text="E-mail cím:" />
+        <Entry x:Name="txtEmail" Text="{Binding UserEmail, Mode=TwoWay}" 
+     />
+        
+        <!--//TODO: use "warning" style"-->
+
+        <Label Text="{Binding EmailError}" 
+       Style="{StaticResource WarningLabel}"
+       IsVisible="{Binding IsEmailErrorVisible}" />
+
+            <Label Text="Jeszó:" />
+            <Entry x:Name="txtPassword" Text="{Binding UserPassword, Mode=TwoWay}" IsPassword="True"
+         />
+        <Label Text="{Binding PasswordError}" 
+       Style="{StaticResource WarningLabel}"
+       IsVisible="{Binding IsPasswordErrorVisible}" />
+
+
+        <Button Text="Bejelentketés" Command="{Binding LoginCommand}" />
+
+
+    <!-- this is a button too functionally, but with different styling (label with onclick vs. button) -->
+    <Label Text="Elfejetett a jelszavad?" 
+    TextColor="Blue" 
+    HorizontalOptions="Center">
+        <Label.GestureRecognizers>
+            <TapGestureRecognizer Tapped="ForgotPassword_Tapped" />
+        </Label.GestureRecognizers>
+    </Label>
+
+    <Label Text="Nincs még fiókod?" HorizontalOptions="Center" />
+    <Button Text="Regisztráció"
+            Clicked="OnRegisterClicked"
+            HorizontalOptions="Center" />
+    </VerticalStackLayout>
+</ContentPage>

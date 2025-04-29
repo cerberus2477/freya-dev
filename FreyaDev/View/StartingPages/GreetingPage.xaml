@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FreyaDev.View.StartingPages.GreetingPage"
+             Title="Welcome"
+             Shell.NavBarIsVisible="False"
+             Shell.PresentationMode="Modal">
+
+    <VerticalStackLayout Padding ="20" Spacing="10">
+        <Image Source="logo_white.png"
+               HorizontalOptions="Center"
+               Style="{StaticResource LogoImage}"/>
+        <Label Text="Welcome to FreyaDev!"
+               Style="{StaticResource LargeLabel}"
+               HorizontalOptions="Center" />
+        <Button Text="Login"
+                Style="{StaticResource PrimaryButton}"
+                Clicked="OnLoginClicked"
+                HorizontalOptions="Center" />
+        <Button Text="Register"
+                Style="{StaticResource BaseButton}"
+                Clicked="OnRegisterClicked"
+                HorizontalOptions="Center" />
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FreyaDev.View.Listings.ListingDetailsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:FreyaDev.ViewModel"
+    x:DataType="viewmodel:ListingDetailsViewModel"
+    Title="{Binding Listing.Title}">
+
+    <ScrollView>
+        <Grid RowDefinitions="Auto,Auto,*">
+            <BoxView
+                BackgroundColor="{StaticResource Primary}"
+                Grid.RowSpan="2"
+                HorizontalOptions="Fill"
+                VerticalOptions="Fill"/>
+
+            <Border StrokeShape="RoundRectangle 80"
+                    Stroke="White"
+                    StrokeThickness="6"
+                    HeightRequest="172"
+                    WidthRequest="172"
+                    Margin="0,8,0,0"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+                    <Image Aspect="AspectFill"
+                        HeightRequest="160"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Source="{Binding Listing.Media}" 
+                        WidthRequest="160"/>
+                    <!-- TODO: Bind Media to display image (probably an api request) -->
+            </Border>
+
+            <Label Style="{StaticResource LargeLabel}" 
+                   Grid.Row="1"
+                   TextColor="White"
+                   FontAttributes="Bold"
+                   Text="{Binding Listing.Title}"  
+                    HorizontalOptions="Center"
+                   Margin="0,0,0,8"/>
+
+                <VerticalStackLayout Grid.Row="2" Padding="10" Spacing="10">
+                    <Label Style="{StaticResource MediumLabel}" Text="{Binding Listing.Description}" />
+                
+                    <!-- TODO: make plant a link to website -->
+                    <Label Style="{StaticResource SmallLabel}" Text="{Binding Listing.PlantName, StringFormat='Plant: {0}'}" />
+               
+                    <Label Style="{StaticResource SmallLabel}" Text="{Binding Listing.PlantType, StringFormat='Type: {0}'}" />
+             
+                    <Label Style="{StaticResource SmallLabel}" Text="{Binding Listing.Stage, StringFormat='Stage: {0}'}" />
+          
+                    <Label Style="{StaticResource SmallLabel}" Text="{Binding Listing.Price, StringFormat='Price: {0:C}'}" />
+
+                    <!-- TODO: make user a link - make userpage -->
+                    <Label Style="{StaticResource SmallLabel}" Text="{Binding Listing.User, StringFormat='User: {0}'}" />
+               
+                    <Label Style="{StaticResource SmallLabel}" Text="{Binding Listing.CreatedAt, StringFormat='Created At: {0:MMM dd, yyyy}'}" />
+
+                </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

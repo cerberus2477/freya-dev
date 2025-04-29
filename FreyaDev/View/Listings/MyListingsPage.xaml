@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FreyaDev.View.Listings.MyListingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:FreyaDev.Model"
+    xmlns:viewmodel="clr-namespace:FreyaDev.ViewModel"
+    x:DataType="viewmodel:MyListingsViewModel"
+    Title="{Binding Title}">
+
+
+    <!--<Grid
+     ColumnSpacing="5"
+    RowDefinitions="*,Auto"
+            RowSpacing="0"
+        >-->
+    <Grid RowDefinitions="Auto, Auto, *" ColumnSpacing="5" RowSpacing="10" HorizontalOptions="Center" WidthRequest="1000">
+        <VerticalStackLayout Padding="10" Grid.Row="0" HorizontalOptions="Fill">
+            <Entry 
+            x:Name="SearchEntry"
+            Placeholder="Keresés..."
+            Text="{Binding SearchQuery, Mode=TwoWay}"
+            HorizontalOptions="Fill"
+            WidthRequest="1000"/>
+        </VerticalStackLayout>
+
+        <RefreshView
+            Grid.Row="2"
+            Grid.ColumnSpan="2"
+            Command="{Binding SearchMyListingsCommand}"
+            IsRefreshing="{Binding IsRefreshing}"
+            >
+            
+            <ContentView>
+                <CollectionView
+                    ItemsSource="{Binding MyListings}"
+                    SelectionMode="None">
+
+
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="2" />
+                    </CollectionView.ItemsLayout>
+
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Listing">
+                            <Grid Padding="10">
+                                <Border>
+                                    <!--//TODO: ez miért relativesource? mit lehet ezzel pontosan elérni
+                                        which means that it isn't binding to the listing anymore in the DataTemplate, but instead it is looking up the hierarchy specifically for an AncestorType of ListingsViewModel. This allows for more advanced scenarios like this.-->
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MyListingsViewModel}}, x:DataType=viewmodel:MyListingsViewModel, Path=GoToUpdateListingCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    </Border.GestureRecognizers>
+                                    <VerticalStackLayout>
+                                        <!-- Image (if available) -->
+                                        <Image Aspect="AspectFill" Source="{Binding Thumbnail}"
+                                           WidthRequest="150"
+                                           HeightRequest="150"
+                                           BackgroundColor="LightGray"
+                                           VerticalOptions="Start"/>
+
+                                        <!-- Listing Details -->
+                                        <VerticalStackLayout
+                                            VerticalOptions="Center"
+                                            Grid.Row="1"
+                                            Padding="10">
+                                            <!--TODO. delete id, this is only here for debugging reasons-->
+                                            <Label Style="{StaticResource LargeLabel}" Text="{Binding Id}" />
+                                            <Label Style="{StaticResource LargeLabel}" Text="{Binding Title}" />
+                                            <Label Style="{StaticResource MediumLabel}" Text="{Binding PlantName}" />
+                                            <Label Style="{StaticResource SmallLabel}" Text="{Binding PlantType}" />
+                                            <Label Style="{StaticResource SmallLabel}" Text="{Binding StageName}" />
+                                            <Label Style="{StaticResource SmallLabel}" Text="{Binding Price, StringFormat='{0:N0} Ft'}" />
+                                            <Label Style="{StaticResource SmallLabel}" Text="{Binding CreatedAtFormatted}" />
+                                        </VerticalStackLayout>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </ContentView>
+        </RefreshView>
+
+
+        <!--loading icon for the initial load. after that the refreshview handles loading-->
+        <!--<Grid IsVisible="{Binding IsBusy}" BackgroundColor="#80000000">
+            <ActivityIndicator 
+          IsRunning="{Binding IsBusy}" 
+          VerticalOptions="Center" 
+          HorizontalOptions="Center" 
+          Color="{StaticResource Primary}" />
+        </Grid>-->
+    </Grid>
+    
+    <!--TODO: if there are no listing (=empty collectionview, display something similar to this-->
+    <!--erre van beépített logika, hogy ha üres akkor ez legyen benne-->
+    <!--saját fptó legyen, a törött növény-->
+    
+    <!--<VerticalStackLayout
+            IsVisible="{Binding NoListingsFound}"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            Spacing="15">
+        <Image Source="dotnet_bot.png"
+                   WidthRequest="120"
+                   HeightRequest="120"
+                   HorizontalOptions="Center"/>
+        <Label Text="Nem található a keresésnek megfelelő hirdetés."
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   TextColor="Gray"
+                   HorizontalTextAlignment="Center"/>
+    </VerticalStackLayout>-->
+</ContentPage>

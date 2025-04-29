@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:FreyaDev"
+             x:Class="FreyaDev.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!-- Define colors -->
+            <Color x:Key="LightGreen1">#f6ffd5</Color>
+            <Color x:Key="LightGreen2">#DFF29D</Color>
+            <Color x:Key="LightGreen3">#a7d366</Color>
+            <Color x:Key="Green">#426b1f</Color>
+            <Color x:Key="DarkGreen1">#27400f</Color>
+            <Color x:Key="DarkGreen2">#1A2B1A</Color>
+            <Color x:Key="GreenWhite">#F0F7EB</Color>
+            <Color x:Key="Red">Red</Color>
+            <Color x:Key="DarkMaroon">#4E1F1F</Color>
+            <Color x:Key="MutedGreen">#737b5e</Color>
+
+
+            <Color x:Key="DarkGrey">#2E332E</Color>
+            <Color x:Key="LighterDarkGrey">#454C45</Color>
+
+
+            <!-- Styles -->
+            <Style TargetType="Page" ApplyToDerivedTypes="True">
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding Light={StaticResource GreenWhite}, Dark={StaticResource DarkGrey}}" />
+            </Style>
+
+            <Style ApplyToDerivedTypes="True" TargetType="NavigationPage">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightGreen3}, Dark={StaticResource DarkGreen1}}" />
+                <Setter Property="BarBackgroundColor" Value="{StaticResource LightGreen3}" />
+                <Setter Property="BarTextColor" Value="{StaticResource GreenWhite}" />
+            </Style>
+
+            <!-- Label styles -->
+            <Style TargetType="Label" x:Key="BaseLabel">
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource DarkGreen2}, Dark={StaticResource GreenWhite}}" />
+            </Style>
+
+            <Style x:Key="MicroLabel" BasedOn="{StaticResource BaseLabel}" TargetType="Label">
+                <Setter Property="FontSize" Value="10"/>
+            </Style>
+
+            <Style x:Key="SmallLabel" BasedOn="{StaticResource BaseLabel}" TargetType="Label">
+                <Setter Property="FontSize" Value="12"/>
+            </Style>
+
+            <Style x:Key="MediumLabel" BasedOn="{StaticResource BaseLabel}" TargetType="Label">
+                <Setter Property="FontSize" Value="16"/>
+            </Style>
+
+            <Style x:Key="LargeLabel" BasedOn="{StaticResource BaseLabel}" TargetType="Label">
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+
+            <Style TargetType="RefreshView" ApplyToDerivedTypes="True">
+                <Setter Property="RefreshColor" Value="{StaticResource LightGreen2}" />
+            </Style>
+
+            <Style x:Key="WarningLabel" BasedOn="{StaticResource BaseLabel}" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource Red}"/>
+            </Style>
+
+            <!-- Button styles -->
+            <!-- Base Button Style -->
+            <Style x:Key="BaseButton" TargetType="Button">
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="Padding" Value="10,5" />
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="HeightRequest" Value="40"/>
+            </Style>
+
+            <Style x:Key="ButtonOutline" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Green}, Dark={StaticResource DarkGreen1}}"/>
+                <Setter Property="TextColor" Value="{StaticResource GreenWhite}"/>
+                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource LightGreen2}, Dark={StaticResource DarkGreen2}}"/>
+            </Style>
+
+            <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+                <Setter Property="BackgroundColor" Value="{StaticResource Green}" />
+                <Setter Property="TextColor" Value="{StaticResource GreenWhite}" />
+            </Style>
+
+            <Style x:Key="WarningButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+                <Setter Property="BackgroundColor" Value="{StaticResource DarkMaroon}" />
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+
+            <!--Listing Page-->
+            <!--TODO: which one is needed?-->
+            <!--<Style TargetType="Border" x:Key="ListingContainer">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource GreenWhite}, Dark={StaticResource Green}}" />
+                <Setter Property="Padding" Value="5" />
+
+            </Style>-->
+
+            <!-- Card style -->
+            <Style x:Key="ListingContainer" TargetType="Border">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightGreen2}, Dark={StaticResource LighterDarkGrey}}" />
+                <Setter Property="Stroke" Value="LightGray" />
+                <Setter Property="StrokeThickness" Value="2" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="Shadow">
+                    <Setter.Value>
+                        <Shadow Brush="Black" Opacity="0.2" Offset="5,5" Radius="10" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+
+            <Style TargetType="Image" x:Key="ListingImage">
+                <Setter Property="HorizontalOptions" Value="Fill" />
+                <Setter Property="VerticalOptions" Value="Fill" />
+                <Setter Property="MinimumWidthRequest" Value="200" />
+                <Setter Property="MinimumHeightRequest" Value="200" />
+                <Setter Property="MaximumWidthRequest" Value="400" />
+                <Setter Property="MaximumHeightRequest" Value="400" />
+                <Setter Property="Margin" Value="0,0,0,10" />
+            </Style>
+            
+            
+            <!--Entry-->
+            <Style TargetType="Entry">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
+                <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light=Gray, Dark=LightGray}" />
+            </Style>
+            
+            <!--Logo-->
+            <Style x:Key="LogoImage" TargetType="Image">
+                <Setter Property="WidthRequest" Value="200" />
+                <Setter Property="HeightRequest" Value="200" />
+                <Setter Property="Aspect" Value="AspectFit" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

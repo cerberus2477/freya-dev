@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FreyaDev.View.Listings.NewListingPage"
+             Title="New Listing">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <!-- Add a button to navigate to MyPlantsPage -->
+            <Button Text="Saját hirdetéseim" BackgroundColor="Blue" TextColor="White" Clicked="OnMyListingsClicked"/>
+
+            <Label Text="Eladás" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
+
+            <!-- Multiple Image Upload -->
+            <Button Text="Upload Photos" Clicked="OnUploadPhotosClicked"/>
+
+            <ScrollView Orientation="Horizontal" HeightRequest="150">
+                <StackLayout x:Name="ImageContainer" Orientation="Horizontal" Spacing="10"/>
+            </ScrollView>
+
+            <Entry x:Name="TitleEntry" Placeholder="Title" />
+
+            <Editor x:Name="DescriptionEditor" Placeholder="Description" AutoSize="TextChanges" HeightRequest="100"/>
+
+            <Entry x:Name="PriceEntry" Placeholder="Price" Keyboard="Numeric"/>
+
+            <Picker x:Name="PlantPicker" Title="Select a Plant">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Körte</x:String>
+                        <x:String>Áfonya</x:String>
+                        <x:String>Alma</x:String>
+                        <x:String>Cseresznye</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <Picker x:Name="TypePicker" Title="Select Type">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Gyümölcs</x:String>
+                        <x:String>Zöldség</x:String>
+                        <x:String>Fűszernövény</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <Picker x:Name="StagePicker" Title="Select Growth Stage">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Mag</x:String>
+                        <x:String>Palánta</x:String>
+                        <x:String>Növény</x:String>
+                        <x:String>Termés</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+            
+            <Button Text="OK" BackgroundColor="Green" TextColor="White" Clicked="OnOkClicked"/>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

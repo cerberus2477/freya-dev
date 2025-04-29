@@ -1,0 +1,103 @@
+<!--<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="FreyaDev.AppShell"
+        xmlns:view="clr-namespace:FreyaDev.View"
+        xmlns:startingPages="clr-namespace:FreyaDev.View.StartingPages"
+        xmlns:listings="clr-namespace:FreyaDev.View.Listings"
+        Shell.FlyoutBehavior="Flyout"
+ 
+
+    Shell.TabBarIsVisible="False"
+    Shell.NavBarIsVisible="false"
+       >
+
+
+    --><!-- Start with GreetingPage -->
+
+    <!--todo: otthon fehér a felirat, suliban nem, valószínűleg a system theme miatt, erre figyelni kéne úgy általában--><!--
+    <ShellContent
+        Title="Üdvözlünk!"
+        ContentTemplate="{DataTemplate startingPages:GreetingPage}"
+        Route="GreetingPage"
+        IsVisible="False"/>
+
+
+    --><!-- Register routes but keep them hidden from navigation --><!--
+    <ShellContent Title="Bejelentkezés" Route="LoginPage" ContentTemplate="{DataTemplate startingPages:LoginPage}" IsVisible="False"/>
+    <ShellContent Title="Regisztráció" Route="RegisterPage" ContentTemplate="{DataTemplate startingPages:RegisterPage}" IsVisible="False"/>
+    <ShellContent Title="Hirdetés részletei" Route="ListingDetailsPage" ContentTemplate="{DataTemplate listings:ListingDetailsPage}" IsVisible="False" />
+    <ShellContent Title="Hirdetés módosítása" Route="UpdateListingPage" ContentTemplate="{DataTemplate listings:UpdateListingPage}" IsVisible="False" />
+    <ShellContent Title="Saját hirdetések" Route="MyListingsPage" ContentTemplate="{DataTemplate listings:MyListingsPage}" IsVisible="False" />
+
+
+    --><!-- Main Navigation Tabs (hidden when not logged in) --><!--
+    <FlyoutItem x:Name="MainFlyoutItem" Title="Dashboard"  IsVisible="True" FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent
+                Title="Kezdőlap"
+                ContentTemplate="{DataTemplate view:HomePage}"
+                Route="HomePage" 
+                Icon="dotnet.bot.png"/>
+
+        <ShellContent
+                Title="Keresés"
+                ContentTemplate="{DataTemplate listings:ListingsPage}"
+                Route="ListingsPage" 
+                Icon="dotnet.bot.png"/>
+
+        <ShellContent
+                Title="Eladás"
+                ContentTemplate="{DataTemplate listings:NewListingPage}"
+                Route="NewListingPage" 
+                Icon="dotnet.bot.png"/>
+
+        <ShellContent
+                Title="Profil"
+                ContentTemplate="{DataTemplate view:ProfilePage}"
+                Route="ProfilePage" 
+                Icon="dotnet.bot.png"/>
+    </FlyoutItem>
+
+
+
+</Shell>-->
+
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       x:Class="FreyaDev.AppShell"
+       xmlns:view="clr-namespace:FreyaDev.View"
+       xmlns:startingPages="clr-namespace:FreyaDev.View.StartingPages"
+       xmlns:listings="clr-namespace:FreyaDev.View.Listings"
+       FlyoutBehavior="Flyout"
+       Shell.TabBarIsVisible="False"
+       Shell.NavBarIsVisible="false">
+
+
+    <!-- Main Flyout Items -->
+    <FlyoutItem x:Name="MainFlyoutItem" Title="Dashboard" IsVisible="True" FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent
+            Title="Kezdőlap"
+            ContentTemplate="{DataTemplate view:HomePage}"
+            Route="HomePage" 
+            Icon="logo_white.png"/>
+
+        <ShellContent
+            Title="Keresés"
+            ContentTemplate="{DataTemplate listings:ListingsPage}"
+            Route="ListingsPage" 
+            Icon="search_icon.png"/>
+
+        <ShellContent
+            Title="Eladás"
+            ContentTemplate="{DataTemplate listings:NewListingPage}"
+            Route="NewListingPage" 
+            Icon="new_listing_icon.png"/>
+
+        <ShellContent
+            Title="Profil"
+            ContentTemplate="{DataTemplate view:ProfilePage}"
+            Route="ProfilePage" 
+            Icon="profile_icon.png"/>
+    </FlyoutItem>
+
+</Shell>

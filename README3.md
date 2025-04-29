@@ -1,0 +1,293 @@
+## Navigation
+
+In Part 3 we will add simple navigation to push a new page onto the stack to display details about the monkey.
+
+We will use the built-in Shell navigation of .NET MAUI. This powerful navigation system is based on URIs. You can pass additional information while navigating query parameter such as a string, or a full object.
+
+For example, let's say we wanted to navigate to a details page and pass in an identifier. 
+
+```csharp
+await Shell.Current.GoToAsync("DetailsPage?name=james");
+```
+
+Then in our details page or view model we should define this property:
+
+```csharp
+[QueryProperty(nameof(Name), "name")]
+public partial class DetailsPage : ContentPage
+{
+    string name;
+    public string Name
+    {
+        get => name;
+        set => name = value;
+    }
+}
+```
+
+When we navigate, the name "james" would be passed along automatically. We can also pass a full object as well using the same mechanism:
+
+```csharp
+var person = new Person { Name="James" };
+await Shell.Current.GoToAsync("DetailsPage", new Dictionary<string, object>
+{
+    { "person", person }
+});
+```
+
+Then on our page or view model we would create the property.
+
+```csharp
+[QueryProperty(nameof(Person), "person")]
+public partial class DetailsPage : ContentPage
+{
+    Person person;
+    public Person Person
+    {
+        get => person;
+        set => person = value;
+    }
+}
+```
+
+Here, the `Person` is automatically serialized and deserialized for us when we navigate.
+
+Now, let's add a click handler to the collection view and pass the monkey to the details page.
+
+---
+
+### Add Selected Event
+
+Now, let's add navigation to a second page that displays monkey details!
+
+1. In `MonkeysViewModel.cs`, create a method `async Task GoToDetailsAsync(Monkey monkey)` exposed as an `[RelayCommand]`:
+
+
+    ```csharp
+    [RelayCommand]
+    async Task GoToDetails(Monkey monkey)
+    {
+        if (monkey == null)
+	    return;
+
+        await Shell.Current.GoToAsync(nameof(DetailsPage), true, new Dictionary<string, object>
+        {
+            {"Monkey", monkey }
+        });
+    }
+    ```
+
+    - This code checks to see if the selected item is non-null and then uses the built in Shell `Navigation` API to push a new page with the monkey as a parameter and then deselects the item. 
+
+1. In `MainPage.xaml` we can add an `TapGestureRecognizer` event to the `Border` of our monkey inside of the `CollectionView.ItemTemplate`:
+
+    Before:
+
+    ```xml
+    <CollectionView.ItemTemplate>
+        <DataTemplate x:DataType="model:Monkey">
+            <Grid Padding="10">
+                <Border HeightRequest="125" Style="{StaticResource CardView}">
+                    <Grid Padding="0" ColumnDefinitions="125,*">
+                        <Image
+                            Aspect="AspectFill"
+                            HeightRequest="125"
+                            Source="{Binding Image}"
+                            WidthRequest="125" />
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            VerticalOptions="Center"
+                            Padding="10">
+                            <Label Style="{StaticResource LargeLabel}" Text="{Binding Name}" />
+                            <Label Style="{StaticResource MediumLabel}" Text="{Binding Location}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+            </Grid>
+        </DataTemplate>
+    </CollectionView.ItemTemplate>
+    ```
+
+    After:
+    ```xml
+    <CollectionView.ItemTemplate>
+        <DataTemplate x:DataType="model:Monkey">
+            <Grid Padding="10">
+                <Border HeightRequest="125" Style="{StaticResource CardView}">
+                    <!-- Add the Gesture Recognizer-->
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MonkeysViewModel}}, x:DataType=viewmodel:MonkeysViewModel, Path=GoToDetailsCommand}"
+                                CommandParameter="{Binding .}"/>
+                    </Border.GestureRecognizers>
+                    <Grid Padding="0" ColumnDefinitions="125,*">
+                        <Image
+                            Aspect="AspectFill"
+                            HeightRequest="125"
+                            Source="{Binding Image}"
+                            WidthRequest="125" />
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            VerticalOptions="Center"
+                            Padding="10">
+                            <Label Style="{StaticResource LargeLabel}" Text="{Binding Name}" />
+                            <Label Style="{StaticResource MediumLabel}" Text="{Binding Location}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+            </Grid>
+        </DataTemplate>
+    </CollectionView.ItemTemplate>
+    ```
+
+    This uses a `RelativeSource` binding, which means that it isn't binding to the `Monkey` anymore in the `DataTemplate`, but instead it is looking up the hierarchy specifically for an `AncestorType` of `MonkeysViewModel`. This allows for more advanced scenarios like this.
+
+
+### ViewModel for Details
+
+1. Inside of our `ViewModel/MonkeyDetailsViewModel.cs`, we will house our logic for assigning the monkey to the view model. Let's first create a bindable property for the `Monkey`:
+
+    ```csharp
+    public partial class MonkeyDetailsViewModel : BaseViewModel
+    {
+        public MonkeyDetailsViewModel()
+        {
+        }
+
+        [ObservableProperty]
+        Monkey monkey;    
+    }
+    ```
+
+1. Next, we will add a `QueryProperty` to handle passing the monkey data:
+
+    ```csharp
+    //Add QueryProperty
+    [QueryProperty(nameof(Monkey), "Monkey")]
+    public partial class MonkeyDetailsViewModel : BaseViewModel
+    {
+        public MonkeyDetailsViewModel()
+        {
+        }
+
+        [ObservableProperty]
+        Monkey monkey;
+    }
+    ```
+    
+    
+## Registering Routing
+
+Now that we have our details page in place, we need to register it for routing. This is done in both the Shell routing system and with the .NET MAUI dependency service.
+
+1. Open `AppShell.xaml.cs` code behind and add the following code into the constructor under the `InitializeComponent();` invoke:
+
+    ```csharp
+    Routing.RegisterRoute(nameof(DetailsPage), typeof(DetailsPage));
+    ```
+
+    This will register the details page with the route of "DetailsPage", which we used earlier.
+
+1. Open `MauiProgram.cs` and add both the view model and the page as `Transient` so a new page and view model is created each time it is navigated to:
+
+    ```csharp
+    builder.Services.AddTransient<MonkeyDetailsViewModel>();
+    
+    ```
+
+> Starting in .NET 9 you no longer need to register Pages with the dependency service for constructor injection to work. By default when we navigate to a new page it will be created an the `MonkeyDetailsViewModel` will be injected as well.
+
+1. Finally, we must inject the view model into our `DetailsPage`. Open the code behind for the page in `DetailsPage.xaml.cs` and change the constructor to the following:
+
+    ```csharp
+	public DetailsPage(MonkeyDetailsViewModel viewModel)
+	{
+		InitializeComponent();
+		BindingContext = viewModel;
+	}
+    ```
+
+### Create DetailsPage.xaml UI
+
+Let's add UI to the DetailsPage. Our end goal is to get a fancy profile screen like this:
+
+![](../Art/Details.PNG)
+
+
+1. Let's first start by defining our DataType by defining the view model namespace and also setting the title:
+
+    ```xml
+    <ContentPage
+        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="FreyaMarketplace.DetailsPage"
+        xmlns:viewmodel="clr-namespace:FreyaMarketplace.ViewModel"
+        x:DataType="viewmodel:MonkeyDetailsViewModel"
+        Title="{Binding Monkey.Name}">
+
+        <!-- Add Content Here -->
+    </ContentPage>
+    ```
+
+1. At the core is a `ScrollView` and `Grid` to layout all of the controls nicely on the screen:
+
+    ```xml
+    <ScrollView>
+        <Grid RowDefinitions="Auto,Auto,*">
+
+            <!-- Background, Image of Monkey, Name -->
+        
+            <!-- Details of Monkey -->
+
+        </Grid>
+    </ScrollView>
+    ```
+
+1. We can now fill in our `Grid` with the following code to place a box as the background color of yellow, and then our monkey image cut out in the shape of a circle:
+
+    ```xml
+    <BoxView
+        BackgroundColor="{StaticResource Primary}"
+        Grid.RowSpan="2"
+        HorizontalOptions="Fill"
+        VerticalOptions="Fill"/>
+
+    <Border StrokeShape="RoundRectangle 80"
+            Stroke="White"
+            StrokeThickness="6"
+            HeightRequest="172"
+            WidthRequest="172"
+            Margin="0,8,0,0"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+            <Image Aspect="AspectFill"
+                HeightRequest="160"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Source="{Binding Monkey.Image}"
+                WidthRequest="160"/>
+    </Border>
+
+    <Label Style="{StaticResource LargeLabel}" 
+            Grid.Row="1"
+            TextColor="White"
+            FontAttributes="Bold"
+            Text="{Binding Monkey.Name}" 
+            HorizontalOptions="Center"
+            Margin="0,0,0,8"/>
+    ```
+
+1. Finally, under the `Label`, but still inside of the `Grid`, we'll add a `VerticalStackLayout` to provide details about the monkey.
+
+```xml
+<VerticalStackLayout Grid.Row="2" Padding="10" Spacing="10">
+    <Label Style="{StaticResource MediumLabel}" Text="{Binding Monkey.Details}" />
+    <Label Style="{StaticResource SmallLabel}" Text="{Binding Monkey.Location, StringFormat='Location: {0}'}" />
+    <Label Style="{StaticResource SmallLabel}" Text="{Binding Monkey.Population, StringFormat='Population: {0}'}" />
+</VerticalStackLayout>
+```
+
+
+1. Run the application on the desired platform and tap on a monkey to navigate!
+
+Platform features are the next topic for us to explore.  Navigate to [Part 4](../Part%204%20-%20Platform%20Features/README.md) to begin the next module.

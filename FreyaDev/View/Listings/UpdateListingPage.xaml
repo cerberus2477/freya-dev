@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FreyaDev.View.Listings.UpdateListingPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:FreyaDev.ViewModel"
+    x:DataType="viewmodel:UpdateListingViewModel"
+    Title="{Binding Listing.Title}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Hirdetés szerkesztése"
+                   Style="{StaticResource LargeLabel}"
+                   HorizontalOptions="Center" />
+
+            <Label Text="Cím" Style="{StaticResource MediumLabel}" />
+            <Entry Text="{Binding ListingTitle}" Placeholder="Pl. Almafa eladó" />
+            <Label Text="{Binding TitleError}" Style="{StaticResource WarningLabel}" IsVisible="{Binding IsTitleErrorVisible}" />
+
+            <Label Text="Leírás" Style="{StaticResource MediumLabel}" />
+            <Editor Text="{Binding Description}" Placeholder="Rövid leírás..." AutoSize="TextChanges" HeightRequest="100" />
+            <Label Text="{Binding DescriptionError}" Style="{StaticResource WarningLabel}" IsVisible="{Binding IsDescriptionErrorVisible}" />
+
+            <Label Text="Település" Style="{StaticResource MediumLabel}" />
+            <Entry Text="{Binding City}" Placeholder="Pl. Budapest" />
+            <Label Text="{Binding CityError}" Style="{StaticResource WarningLabel}" IsVisible="{Binding IsCityErrorVisible}" />
+
+            <Label Text="Ár (Ft)" Style="{StaticResource MediumLabel}" />
+            <Entry Text="{Binding Price}" Keyboard="Numeric" Placeholder="Pl. 1500" />
+            <Label Text="{Binding PriceError}" Style="{StaticResource WarningLabel}" IsVisible="{Binding IsPriceErrorVisible}" />
+
+            <Label Text="Növény" Style="{StaticResource MediumLabel}" />
+            <Picker Title="Válassz növényt"
+                    ItemsSource="{Binding allPlants}"
+                    ItemDisplayBinding="{Binding Name}"
+                    SelectedItem="{Binding Plant}" />
+            <Label Text="{Binding PlantError}" Style="{StaticResource WarningLabel}" IsVisible="{Binding IsPlantErrorVisible}" />
+
+            <Label Text="Növekedési stádium" Style="{StaticResource MediumLabel}" />
+            <Picker Title="Válassz stádiumot"
+                    ItemsSource="{Binding allStages}"
+                    ItemDisplayBinding="{Binding Name}"
+                    SelectedItem="{Binding Stage}" />
+            <Label Text="{Binding StageError}" Style="{StaticResource WarningLabel}" IsVisible="{Binding IsStageErrorVisible}" />
+
+            <Label Text="Darabszám" Style="{StaticResource MediumLabel}" />
+            <Entry Text="{Binding Count}" Keyboard="Numeric" Placeholder="Pl. 10" />
+            <Label Text="{Binding CountError}" Style="{StaticResource WarningLabel}" IsVisible="{Binding IsCountErrorVisible}" />
+
+            <Button Text="Mentés"
+                    Style="{StaticResource PrimaryButton}"
+                    Command="{Binding SendPatchRequestsCommand}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
