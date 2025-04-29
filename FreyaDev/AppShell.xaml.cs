@@ -18,7 +18,6 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(NewListingPage), typeof(NewListingPage));
 
         Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
-        Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
         Routing.RegisterRoute(nameof(GreetingPage), typeof(GreetingPage));
 
         Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
@@ -46,8 +45,7 @@ public partial class AppShell : Shell
     {
         base.OnNavigated(args);
         bool hideFlyout = args.Current.Location.OriginalString.Contains("GreetingPage") ||
-                          args.Current.Location.OriginalString.Contains("LoginPage") ||
-                          args.Current.Location.OriginalString.Contains("RegisterPage");
+                          args.Current.Location.OriginalString.Contains("LoginPage")
 
         SetFlyoutBehavior(this, hideFlyout ? FlyoutBehavior.Disabled : FlyoutBehavior.Flyout);
     }

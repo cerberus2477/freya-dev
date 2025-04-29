@@ -17,9 +17,5 @@
                 Style="{StaticResource PrimaryButton}"
                 Clicked="OnLoginClicked"
                 HorizontalOptions="Center" />
-        <Button Text="Register"
-                Style="{StaticResource BaseButton}"
-                Clicked="OnRegisterClicked"
-                HorizontalOptions="Center" />
     </VerticalStackLayout>
 </ContentPage>

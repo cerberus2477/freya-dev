@@ -28,21 +28,16 @@
        IsVisible="{Binding IsPasswordErrorVisible}" />
 
 
-        <Button Text="Bejelentketés" Command="{Binding LoginCommand}" />
+        <Button Text="Bejelentkezés" Command="{Binding LoginCommand}" />
 
 
     <!-- this is a button too functionally, but with different styling (label with onclick vs. button) -->
-    <Label Text="Elfejetett a jelszavad?" 
+        <Label Text="Elfejetett a jelszavad?" 
     TextColor="Blue" 
     HorizontalOptions="Center">
-        <Label.GestureRecognizers>
-            <TapGestureRecognizer Tapped="ForgotPassword_Tapped" />
-        </Label.GestureRecognizers>
-    </Label>
-
-    <Label Text="Nincs még fiókod?" HorizontalOptions="Center" />
-    <Button Text="Regisztráció"
-            Clicked="OnRegisterClicked"
-            HorizontalOptions="Center" />
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="ForgotPassword_Tapped" />
+            </Label.GestureRecognizers>
+        </Label>
     </VerticalStackLayout>
 </ContentPage>

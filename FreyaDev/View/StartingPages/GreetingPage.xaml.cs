@@ -13,10 +13,5 @@ namespace FreyaDev.View.StartingPages
             await Shell.Current.GoToAsync("LoginPage");
         }
 
-        private async void OnRegisterClicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync("RegisterPage");
-        }
-
     }
 }

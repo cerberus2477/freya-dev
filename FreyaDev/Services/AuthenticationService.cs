@@ -8,7 +8,7 @@ namespace FreyaDev.Services;
 
 public class AuthenticationService
 {
-   HttpClient httpClient;
+    HttpClient httpClient;
     JsonSerializerOptions jsonOptions;
 
     public AuthenticationService()
@@ -53,34 +53,4 @@ public class AuthenticationService
             return new LoginApiResponse(500, $"Váratlan hiba történt a bejelentkezés során. ({ex.Message})");
         }
     }
-
-    //TODO: jelszavakat itt is már titkosítani kéne? akár egyből a viewmodelben hogy ne tároljukaz actual tartalmát?
-    public async Task<RegisterApiResponse> RegisterAsync(string username, string userEmail, string userPassword, string userPasswordConfirmation)
-    {
-        var url = $"{AppSettings.ApiBaseUrl}register";
-        var requestData = new {username = username, email = userEmail, password = userPassword, password_confirmation = userPasswordConfirmation};
-        var content = new StringContent(JsonSerializer.Serialize(requestData), Encoding.UTF8, "application/json");
-
-        try
-        {
-            var response = await httpClient.PostAsync(url, content);
-            var responseText = await response.Content.ReadAsStringAsync();
-            Debug.WriteLine($"\n\nRegister request sent to API.\nRaw response: {responseText}");
-            var registerApiResponse = JsonSerializer.Deserialize<RegisterApiResponse>(responseText, jsonOptions);
-            Debug.WriteLine($"Deseriaolized response: \n\ttype:{registerApiResponse} \n\tcontent:{JsonSerializer.Serialize(registerApiResponse)}");
-
-            if (registerApiResponse != null) return registerApiResponse;
-            else return new RegisterApiResponse(500, "Hibás válaszformátum az API-tól");
-        }
-        catch (JsonException ex)
-        {
-            return new RegisterApiResponse(500, "Hibás válaszformátum az API-tól");
-        }
-        catch (Exception ex)
-        {
-            return new RegisterApiResponse(500, $"Váratlan hiba történt a regisztráció során. ({ex.Message})");
-        }
-    }
 }
-
-//TODO: kérdés. ugye a serviceket di-jal adjuk át (ott construktorban a cucc) de pl a httpclient éls a jsonoptionst nem. lehet ezeket egységesen kéne

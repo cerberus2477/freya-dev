@@ -12,11 +12,6 @@ namespace FreyaDev.View.StartingPages
             BindingContext = viewModel;
         }
 
-        private async void OnRegisterClicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync("RegisterPage");
-        }
-
         private async void ForgotPassword_Tapped(object sender, EventArgs e)
         {
             await DisplayAlert("Forgot Password - not implemened", "Password reset functionality not implemented yet.", "OK");
