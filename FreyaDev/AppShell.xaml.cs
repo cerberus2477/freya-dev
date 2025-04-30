@@ -25,6 +25,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
 
         Routing.RegisterRoute(nameof(UsersPage), typeof(UsersPage));
+        Routing.RegisterRoute(nameof(UserUpdatePage), typeof(UserUpdatePage));
 
         DetermineStartPage();
         //AdjustNavigationBar();

@@ -68,12 +68,12 @@ namespace FreyaDev.Services
 
 
         //TODO finish this (currently just returns the users)
-        public async Task<string> DeleteUserAsync(int userId)
+        public async Task<string> DeleteUserAsync(User user)
         {
-            var url = $"{AppSettings.ApiBaseUrl}users";
+            var url = $"{AppSettings.ApiBaseUrl}users/{user.Username}";
 
             var token = await SecureStorage.GetAsync("auth_token");
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            var request = new HttpRequestMessage(HttpMethod.Delete, url);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
 
@@ -84,12 +84,14 @@ namespace FreyaDev.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var responseText = await response.Content.ReadAsStringAsync();
-                    Debug.WriteLine($"\n\nGET Users request sent to API.\nRaw response: {responseText}");
+                    Debug.WriteLine($"\n\nDELETE User request sent to API.\nRaw response: {responseText}");
                     var userApiResponse = JsonSerializer.Deserialize<UsersApiResponse>(responseText, jsonOptions);
                     Debug.WriteLine($"Deserialized response: \n\tcontent:{JsonSerializer.Serialize(userApiResponse)}");
-
-                    users = userApiResponse.Data;
-
+                    await Shell.Current.DisplayAlert(
+                        "Sikeres törlés",
+                        $"{user.Username} felhasználó eltávolítva",
+                        "Ok");
+                    //TODO restore(?), aslo viewmodelbe kellene tenni az alertet (?)
                 }
                 else
                 {
@@ -104,7 +106,105 @@ namespace FreyaDev.Services
             {
                 await exceptionHandlerUtil.HandleExceptionAsync(ex, "Váratlan hiba történt a felhasználók lekérése közben.");
             }
-            return "users";
+            return "Delete complete";
+        }
+
+        // Modify GetUserByIdAsync to handle responses better
+        public async Task<UserApiResponse> GetUserByIdAsync(int userId)
+        {
+            var url = $"{AppSettings.ApiBaseUrl}users/{userId}";
+            var token = await SecureStorage.GetAsync("auth_token");
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            try
+            {
+                var response = await httpClient.SendAsync(request);
+                var responseText = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new UserApiResponse(
+                        (int)response.StatusCode,
+                        $"Error: {response.ReasonPhrase}");
+                }
+
+                return JsonSerializer.Deserialize<UserApiResponse>(responseText, jsonOptions)
+                       ?? new UserApiResponse(500, "Invalid API response");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"User fetch error: {ex}");
+                return new UserApiResponse(500, ex.Message);
+            }
+        }
+
+        public async Task<UserApiResponse> UpdateUserAsync(User user, string username, string userEmail, string userCity, string userBirthdate, string userDescription)
+        {
+            var patchData = new Dictionary<string, string>();
+
+            if (username != user.Username)
+            {
+                patchData["username"] = username;
+            }
+
+            if (userEmail != user.Email)
+            {
+                patchData["email"] = userEmail;
+            }
+
+            if (userCity != user.City)
+            {
+                patchData["city"] = userCity;
+            }
+
+            if (userBirthdate != user.Birthdate)
+            {
+                patchData["birthdate"] = userBirthdate;
+            }
+
+            if (userDescription != user.Description)
+            {
+                patchData["description"] = userDescription;
+            }
+
+
+            var url = $"{AppSettings.ApiBaseUrl}users/{user.Username}";
+            var token = await SecureStorage.GetAsync("auth_token");
+            var request = new HttpRequestMessage(HttpMethod.Patch, url);
+            var content = new StringContent(JsonSerializer.Serialize(patchData), Encoding.UTF8, "application/json");
+            request.Content = content;
+
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            try
+            {
+                var response = await httpClient.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseText = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine($"\n\nPATCH User request sent to API.\nRaw response: {responseText}");
+                    var userApiResponse = JsonSerializer.Deserialize<UserApiResponse>(responseText, jsonOptions);
+                    Debug.WriteLine($"Deserialized response: \n\tcontent:{JsonSerializer.Serialize(userApiResponse)}");
+                    await Shell.Current.DisplayAlert(
+                        "Sikeres módosítás",
+                        $"{user.Username} felhasználó módosítva",
+                        "Ok");
+                    return userApiResponse;
+                }
+                else
+                {
+                    await exceptionHandlerUtil.HandleExceptionAsync(new Exception($"PATCH User request sent to API.\nResponse status: {response.StatusCode}"), "Nem sikerült módosítani a felhasználót, mert az API nem 200 (OK) választ adott vissza.");
+                }
+            }
+            catch (JsonException ex)
+            {
+                await exceptionHandlerUtil.HandleExceptionAsync(ex, "Hibás válaszformátum az API-tól.");
+            }
+            catch (Exception ex)
+            {
+                await exceptionHandlerUtil.HandleExceptionAsync(ex, "Váratlan hiba történt a felhasználók lekérése közben.");
+            }
+            return new UserApiResponse(500, "Váratlan hiba történt a felhasználók lekérése közben.");
         }
     }
 }

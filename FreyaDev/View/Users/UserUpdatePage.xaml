@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FreyaDev.View.Users.UserUpdatePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:FreyaDev.Model"
+    xmlns:viewmodel="clr-namespace:FreyaDev.ViewModel"
+    x:DataType="viewmodel:UserViewModel"
+    Title="{Binding Title}">
+
+    <VerticalStackLayout Padding="20">
+        <Image Source="dotnet_bot.png" WidthRequest="100" HeightRequest="100" HorizontalOptions="Center"/>
+
+        <!-- Username -->
+        <Label Text="Felhasználónév:" FontSize="16"/>
+        <Entry x:Name="UsernameEntry" Text="{Binding UserUsername}" IsEnabled="False"/>
+        <Label Text="{Binding UserUsernameError}" 
+            TextColor="Red" 
+            IsVisible="{Binding IsUserUsernameErrorVisible}" />
+
+        <!-- Email -->
+        <Label Text="Email:" FontSize="16"/>
+        <Entry x:Name="EmailEntry" Text="{Binding UserEmail}" IsEnabled="False"/>
+        <Label Text="{Binding UserEmailError}" 
+            TextColor="Red" 
+            IsVisible="{Binding IsUserEmailErrorVisible}" />
+
+        <!-- City -->
+        <Label Text="Település:" FontSize="16"/>
+        <Entry x:Name="CityEntry" Text="{Binding UserCity}" IsEnabled="False"/>
+        <Label Text="{Binding UserCityError}" 
+            TextColor="Red" 
+            IsVisible="{Binding IsUserCityErrorVisible}" />
+
+        <!-- Birthdate -->
+        <Label Text="Születési dátum:" FontSize="16"/>
+        <DatePicker x:Name="BirthdateEntry" Date="{Binding UserBirthdate, Converter={StaticResource StringToDateConverter}}"
+                Format="yyyy-mm-dd"
+                IsEnabled="False"/>
+        <Label Text="{Binding UserBirthdateError}" 
+            TextColor="Red" 
+            IsVisible="{Binding IsUserBirthdateErrorVisible}" />
+
+        <!--Description-->
+        <Label Text="Leírás:" FontSize="16"/>
+        <Entry x:Name="DescriptionEntry" Text="{Binding UserDescription}" IsEnabled="False"/>
+
+        <!-- Edit & Save Buttons -->
+        <Button x:Name="EditButton" Text="Módosítás" Clicked="EditUser_Clicked" Margin="10"/>
+        <!-- Update the Save button to use CurrentUser -->
+        <Button x:Name="SaveButton" 
+        Text="Mentés" 
+        Clicked="SaveUser_Clicked" 
+        Command="{Binding SaveUserCommand}" 
+        CommandParameter="{Binding CurrentUser}"
+        IsVisible="False" 
+        Margin="10"/>
+        <!--TODO: két külön parancs legyen? egy a viewben ami kikapcsolja a mezők módosítását, egy a viewmodelben ami menti az apiba az adatokat.-->
+
+    </VerticalStackLayout>
+</ContentPage>
