@@ -90,6 +90,7 @@
                 <Setter Property="TextColor" Value="White" />
             </Style>
 
+
             <!--Listing Page-->
             <!--TODO: which one is needed?-->
             <!--<Style TargetType="Border" x:Key="ListingContainer">

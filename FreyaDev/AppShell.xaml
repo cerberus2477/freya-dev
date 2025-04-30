@@ -67,6 +67,7 @@
        xmlns:view="clr-namespace:FreyaDev.View"
        xmlns:startingPages="clr-namespace:FreyaDev.View.StartingPages"
        xmlns:listings="clr-namespace:FreyaDev.View.Listings"
+       xmlns:users="clr-namespace:FreyaDev.View.Users"
        FlyoutBehavior="Flyout"
        Shell.TabBarIsVisible="False"
        Shell.NavBarIsVisible="false">
@@ -81,16 +82,10 @@
             Icon="logo_white.png"/>
 
         <ShellContent
-            Title="Keresés"
-            ContentTemplate="{DataTemplate listings:ListingsPage}"
-            Route="ListingsPage" 
-            Icon="search_icon.png"/>
-
-        <ShellContent
-            Title="Eladás"
-            ContentTemplate="{DataTemplate listings:NewListingPage}"
-            Route="NewListingPage" 
-            Icon="new_listing_icon.png"/>
+            Title="Felhasználók"
+            ContentTemplate="{DataTemplate users:UsersPage}"
+            Route="UsersPage" 
+            Icon="profile_icon.png"/>
 
         <ShellContent
             Title="Profil"

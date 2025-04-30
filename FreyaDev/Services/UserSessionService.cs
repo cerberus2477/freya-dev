@@ -1,60 +1,65 @@
 ﻿using Microsoft.Maui.Storage;
 
-namespace FreyaDev.Services
+namespace FreyaDev.Services;
+
+public class UserSessionService
 {
-    public class UserSessionService
+    private const string TokenKey = "auth_token";
+    private const string UserKey = "current_user";
+
+
+    public User? GetCurrentUser()
     {
-        private const string TokenKey = "auth_token";
-        private const string UserKey = "current_user";
-        public User? GetCurrentUser()
-        {
-            var userJson = Preferences.Get(UserKey, null);
-            if (string.IsNullOrEmpty(userJson))
-                return null;
+        var userJson = Preferences.Get(UserKey, null);
+        if (string.IsNullOrEmpty(userJson))
+            return null;
 
-            try
-            {
-                return JsonSerializer.Deserialize<User>(userJson);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        public string? GetCurrentUsername()
+        try
         {
-            return GetCurrentUser()?.Username;
+            return JsonSerializer.Deserialize<User>(userJson);
         }
-
-        public void SetCurrentUser(User user)
+        catch
         {
-            var json = JsonSerializer.Serialize(user);
-            Preferences.Set(UserKey, json);
+            return null;
         }
+    }
+    public int GetCurrentRole()
+    {
+        return GetCurrentUser()?.RoleId ?? 0;
+    }
 
-        public async Task SetAuthTokenAsync(string token)
-        {
-            await SecureStorage.SetAsync(TokenKey, token);
-        }
+    public string? GetCurrentUsername()
+    {
+        return GetCurrentUser()?.Username;
+    }
 
-        public async Task<string?> GetAuthTokenAsync()
-        {
-            try
-            {
-                return await SecureStorage.GetAsync(TokenKey);
-            }
-            catch
-            {
-                return null;
-            }
-        }
+    public void SetCurrentUser(User user)
+    {
+        var json = JsonSerializer.Serialize(user);
+        Preferences.Set(UserKey, json);
+    }
 
-        public void Logout()
+    public async Task SetAuthTokenAsync(string token)
+    {
+        await SecureStorage.SetAsync(TokenKey, token);
+    }
+
+    public async Task<string?> GetAuthTokenAsync()
+    {
+        try
         {
-            Preferences.Remove(UserKey);
-            SecureStorage.Remove(TokenKey);
-            Preferences.Set("IsLoggedIn", false);
+            return await SecureStorage.GetAsync(TokenKey);
         }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public void Logout()
+    {
+        Preferences.Remove(UserKey);
+        SecureStorage.Remove(TokenKey);
+        Preferences.Set("IsLoggedIn", false);
     }
 }

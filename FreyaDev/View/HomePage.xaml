@@ -9,7 +9,7 @@
                HorizontalOptions="Center"
                Style="{StaticResource LogoImage}"/>
         
-        <Label Text="Welcome to Freyas Garden!"
+        <Label Text="Welcome to Freyas Garden Developer App!"
                Style="{StaticResource LargeLabel}"
                HorizontalOptions="Center"/>
         

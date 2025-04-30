@@ -1,6 +1,7 @@
 using FreyaDev.View;
 using FreyaDev.View.StartingPages;
 using FreyaDev.View.Listings;
+using FreyaDev.View.Users;
 
 namespace FreyaDev;
 
@@ -22,6 +23,8 @@ public partial class AppShell : Shell
 
         Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
         Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
+
+        Routing.RegisterRoute(nameof(UsersPage), typeof(UsersPage));
 
         DetermineStartPage();
         //AdjustNavigationBar();

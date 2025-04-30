@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FreyaDev.View.Users.UserDetailPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:FreyaDev.Model"
+    xmlns:viewmodel="clr-namespace:FreyaDev.ViewModel"
+    x:DataType="viewmodel:UserViewModel"
+    Title="{Binding Title}">
+
+    <Label
+        Text="{Binding User.Username}"
+        Style="{StaticResource LargeLabel}"
+        HorizontalOptions="Center" />
+
+</ContentPage>

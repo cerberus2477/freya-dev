@@ -30,6 +30,7 @@ public static class MauiProgram
 
         builder.Services.AddTransient<ProfileViewModel>();
         builder.Services.AddTransient<AuthViewModel>();
+        builder.Services.AddTransient<UserViewModel>();
 
         //Services
         builder.Services.AddSingleton<ListingService>();
@@ -38,6 +39,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<UserSessionService>();
         builder.Services.AddSingleton<StageService>();
         builder.Services.AddSingleton<PlantService>();
+        builder.Services.AddSingleton<UserService>();
 
 
         //Utils

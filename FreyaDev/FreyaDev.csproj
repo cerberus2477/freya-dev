@@ -66,6 +66,12 @@
 	  <Compile Update="View\Listings\MyListingsPage.xaml.cs">
 	    <DependentUpon>MyListingsPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="View\Users\UserDetailPage.xaml.cs">
+	    <DependentUpon>UserDetailPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="View\Users\UsersPage.xaml.cs">
+	    <DependentUpon>UsersPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -100,6 +106,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\StartingPages\LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\Users\UserDetailPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\Users\UsersPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

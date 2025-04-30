@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FreyaDev.View.Users.UsersPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:FreyaDev.Model"
+    xmlns:viewmodel="clr-namespace:FreyaDev.ViewModel"
+    x:DataType="viewmodel:UserViewModel"
+    Title="{Binding Title}">
+
+    <ScrollView>
+        <Grid Padding="10" ColumnSpacing="10" RowSpacing="20">
+            <!-- Define column widths -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Define header row -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Table Headers -->
+            <Label Text="ID" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" />
+            <Label Text="Felhasználónév" FontAttributes="Bold" Grid.Row="0" Grid.Column="1" />
+            <Label Text="Email" FontAttributes="Bold" Grid.Row="0" Grid.Column="2" />
+            <Label Text="Város" FontAttributes="Bold" Grid.Row="0" Grid.Column="3" />
+            <Label Text="Szül. év" FontAttributes="Bold" Grid.Row="0" Grid.Column="4" />
+            <Label Text="Leírás" FontAttributes="Bold" Grid.Row="0" Grid.Column="5" />
+            <Label Text="Műveletek" FontAttributes="Bold" Grid.Row="0" Grid.Column="6" />
+
+            <!-- Bind user data -->
+            <CollectionView
+                Grid.Row="1"
+                Grid.ColumnSpan="7"
+                
+                ItemsSource="{Binding Users}"
+                SelectionMode="None"
+                Margin="10">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:User">
+                        <VerticalStackLayout>
+                            <Grid ColumnSpacing="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Id}" Grid.Column="0" />
+                                <Label Text="{Binding Username}" Grid.Column="1" />
+                                <Label Text="{Binding Email}" Grid.Column="2" />
+                                <Label Text="{Binding City}" Grid.Column="3" />
+                                <Label Text="{Binding Birthdate}" Grid.Column="4" />
+                                <Label Text="{Binding Description}" Grid.Column="5" />
+                                <HorizontalStackLayout Grid.Column="6">
+                                    <Button
+                                        Style="{StaticResource ButtonOutline}"
+                                        Text="✎"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.GoToUserUpdateCommand}"
+                                        CommandParameter="{Binding}"
+                                        >
+                                    </Button>
+                                    <Button
+                                        Style="{StaticResource ButtonOutline}"
+                                        Text="🗑"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteUserCommand}"
+                                        CommandParameter="{Binding}"
+                                        >
+                                    </Button>
+                                </HorizontalStackLayout>
+                            </Grid>
+                            <BoxView HeightRequest="1" Color="LightGray" Margin="0,5"/>
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </ScrollView>
+
+</ContentPage>
